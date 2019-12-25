@@ -1,16 +1,21 @@
 package com.example.Entity;
 
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "user")
 public class User {
      
+	@Transient
+    public static final String SEQUENCE_NAME = "users_sequence";
+	
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GenericGenerator(name = "customId", strategy = "com.example.generator.ClientIdGenerator")
+    @GeneratedValue(generator = "customId")
     private long id;
     private String name;
     private String email;
